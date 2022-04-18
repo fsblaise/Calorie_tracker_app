@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">Shop</string>
+    <string name="name">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="registration">Registration</string>
+    <string name="email">E-mail address</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="cancel">Cancel</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="address">Postal Address</string>
+    <string name="customer">Customer</string>
+    <string name="seller">Seller</string>
+    <string name="product_description">Product description</string>
+    <string name="loginGoogle">Login with Google</string>
+    <string name="loginGuest">Login as guest</string>
+    <string-array name="phone_modes">
+        <item>Home</item>
+        <item>Work</item>
+        <item>Mobile</item>
+        <item>Other</item>
+    </string-array>
+    <string name="title_placeholder">Title</string>
+    <string name="item_placeholder">Description</string>
+    <string name="item_info_placeholder">Information about the product</string>
+    <string name="subtitle_detail_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ultrices congue rutrum. Phasellus elementum ipsum ac convallis aliquam. Suspendisse eleifend eros a enim faucibus mollis. Nunc placerat, est vitae vestibulum blandit, dolor diam fringilla tellus, eu euismod mauris neque at neque.</string>
+    <string name="to_cart">To cart</string>
+    <string name="account_type">Account Type</string>
+    <string name="delete">Delete</string>
+
+    <string-array name="shopping_item_names">
+        <item>Smart Phone</item>
+        <item>Tablet</item>
+        <item>Gaming PC</item>
+        <item>Oled TV</item>
+        <item>Bicycle</item>
+        <item>Lego</item>
+        <item>Costume</item>
+        <item>Sport tools</item>
+        <item>Kitchen tools</item>
+        <item>Furniture</item>
+    </string-array>
+
+    <string-array name="shopping_item_desc">
+        <item>This is a smartphone!</item>
+        <item>This is a tablet!</item>
+        <item>This is a gamer pc!</item>
+        <item>This is a OLED TV!</item>
+        <item>This is a bicycle!</item>
+        <item>This is a lego set!</item>
+        <item>This is a costume!</item>
+        <item>These are sport tools!</item>
+        <item>These are kitchen tools!</item>
+        <item>This is a piece of furniture!</item>
+    </string-array>
+
+    <array name="shopping_item_rates">
+        <item>3.5</item>
+        <item>5</item>
+        <item>4</item>
+        <item>1.5</item>
+        <item>5</item>
+        <item>3</item>
+        <item>4.5</item>
+        <item>4</item>
+        <item>5</item>
+        <item>2.5</item>
+    </array>
+
+    <array name="shopping_item_images">
+        <item>@drawable/smart_phone</item>
+        <item>@drawable/tablet</item>
+        <item>@drawable/pc</item>
+        <item>@drawable/oled_tv</item>
+        <item>@drawable/bike</item>
+        <item>@drawable/lego</item>
+        <item>@drawable/custome</item>
+        <item>@drawable/sport_tools</item>
+        <item>@drawable/kitchen</item>
+        <item>@drawable/furniture</item>
+    </array>
+
+    <array name="shopping_item_price">
+        <item>100 Dv</item>
+        <item>150 Dv</item>
+        <item>500 Dv</item>
+        <item>300 Dv</item>
+        <item>180 Dv</item>
+        <item>70 Dv</item>
+        <item>20 Dv</item>
+        <item>30 Dv</item>
+        <item>15 Dv</item>
+        <item>90 Dv</item>
+    </array>
+</resources>
