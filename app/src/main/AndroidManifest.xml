@@ -10,13 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kcal">
         <activity
+            android:name=".IntakeActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
 
         <receiver
             android:name=".AlarmReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <service
             android:name=".NotificationJobService"

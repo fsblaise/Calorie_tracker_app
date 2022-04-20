@@ -209,7 +209,7 @@ public class MainActivity extends Activity {
     }
 
     public void goToFoodList(View view) {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, ShopListActivity.class);
         intent.putExtra("SECRET_KEY", SECRET_KEY);
         startActivity(intent);
         // TODO: putextra with the secret key, default 99, logged in 98,
@@ -217,7 +217,7 @@ public class MainActivity extends Activity {
     }
 
     public void goToIntake(View view) {
-        Intent intent = new Intent(this, ShopListActivity.class);
+        Intent intent = new Intent(this, IntakeActivity.class);
         if (SECRET_KEY == 98){
             startActivity(intent);
         }

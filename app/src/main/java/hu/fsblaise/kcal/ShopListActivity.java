@@ -49,7 +49,7 @@ public class ShopListActivity extends AppCompatActivity {
     private TextView countTextView;
     private int cartItems = 0;
     private int gridNumber = 1;
-    private int queryLimit = 10;
+    private int queryLimit = 1000;
 
     // Member variables.
     private RecyclerView mRecyclerView;
@@ -126,7 +126,7 @@ public class ShopListActivity extends AppCompatActivity {
 
             switch (action) {
                 case Intent.ACTION_POWER_CONNECTED:
-                    queryLimit = 10;
+                    queryLimit = 1000;
                     break;
                 case Intent.ACTION_POWER_DISCONNECTED:
                     queryLimit = 5;
