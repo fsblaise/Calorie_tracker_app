@@ -14,6 +14,14 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Button.White" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">@android:color/holo_blue_dark</item>
+    </style>
+
+    <style name="NoTitleTheme" parent="Theme.AppCompat" >
+        <item name="android:windowNoTitle">true</item>   <!-- //this -->
+    </style>
+
     <style name="ItemDetailText" parent="TextAppearance.AppCompat.Subhead"/>
     <style name="ItemTitle" parent="TextAppearance.AppCompat.Headline"/>
     <style name="ItemDetailTitle" parent="TextAppearance.AppCompat.Headline"/>
