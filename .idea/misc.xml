@@ -4,6 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Important/Balazs/PROG/Egyetem/Mobilalkfejl/Kcal/app/src/main/res/layout/activity_main.xml" value="0.371875" />
+        <entry key="..\:/Prog/Kcal/app/src/main/res/drawable/circle.xml" value="0.2555" />
+        <entry key="..\:/Prog/Kcal/app/src/main/res/drawable/rectangle.xml" value="0.2555" />
+        <entry key="..\:/Prog/Kcal/app/src/main/res/layout-land/activity_main.xml" value="0.21957671957671956" />
+        <entry key="..\:/Prog/Kcal/app/src/main/res/layout/activity_login.xml" value="0.259375" />
+        <entry key="..\:/Prog/Kcal/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Prog/Kcal/app/src/main/res/layout/activity_shop_list.xml" value="0.259375" />
+        <entry key="..\:/Prog/Kcal/app/src/main/res/layout/custom_menu_item.xml" value="0.259375" />
+        <entry key="..\:/Prog/Kcal/app/src/main/res/layout/list_item.xml" value="0.259375" />
       </map>
     </option>
   </component>

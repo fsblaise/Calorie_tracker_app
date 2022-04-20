@@ -27,6 +27,8 @@
     <string name="to_cart">To cart</string>
     <string name="account_type">Account Type</string>
     <string name="delete">Delete</string>
+    <string name="list_of_foods">List of foods</string>
+    <string name="my_daily_intake">My daily intake</string>
 
     <string-array name="shopping_item_names">
         <item>Smart Phone</item>
