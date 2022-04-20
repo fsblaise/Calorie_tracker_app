@@ -41,7 +41,7 @@ public class NotificationHandler {
     }
 
     public void send(String message){
-        Intent intent = new Intent(mContext, ShopListActivity.class);
+        Intent intent = new Intent(mContext, FoodListActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 

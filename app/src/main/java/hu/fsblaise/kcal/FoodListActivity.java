@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -36,12 +37,13 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class ShopListActivity extends AppCompatActivity {
-    private static final String LOG_TAG = ShopListActivity.class.getName();
+public class FoodListActivity extends AppCompatActivity {
+    private static final String LOG_TAG = FoodListActivity.class.getName();
     private static final String PREF_KEY = MainActivity.class.getPackage().toString();
     private FirebaseUser user;
 
@@ -53,11 +55,13 @@ public class ShopListActivity extends AppCompatActivity {
 
     // Member variables.
     private RecyclerView mRecyclerView;
-    private ArrayList<ShoppingItem> mItemsData;
-    private ShoppingItemAdapter mAdapter;
+    private ArrayList<FoodItem> mItemsData;
+    private ArrayList<FoodItem> mItems2Data;
+    private FoodItemAdapter mAdapter;
 
     private FirebaseFirestore mFirestore;
     private CollectionReference mItems;
+    private CollectionReference mItems2;
 
     private NotificationHandler mNotificationHandler;
     private AlarmManager mAlarmManager;
@@ -73,12 +77,15 @@ public class ShopListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shop_list);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            Log.d(LOG_TAG, "Authenticated user!");
-        } else {
-            Log.d(LOG_TAG, "Unauthenticated user!");
-            finish();
-        }
+
+        //Commented out, because it will block the guest login
+
+//        if (user != null && !user.getEmail().equals("null")) {
+//            Log.d(LOG_TAG, "Authenticated user!" + user.getEmail());
+//        } else {
+//            Log.d(LOG_TAG, "Unauthenticated user!");
+//            finish();
+//        }
 
 /*        preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
         if(preferences != null) {
@@ -93,12 +100,14 @@ public class ShopListActivity extends AppCompatActivity {
                 this, gridNumber));
         // Initialize the ArrayList that will contain the data.
         mItemsData = new ArrayList<>();
+        mItems2Data = new ArrayList<>();
         // Initialize the adapter and set it to the RecyclerView.
-        mAdapter = new ShoppingItemAdapter(this, mItemsData);
+        mAdapter = new FoodItemAdapter(this, mItemsData);
         mRecyclerView.setAdapter(mAdapter);
 
         mFirestore = FirebaseFirestore.getInstance();
-        mItems = mFirestore.collection("Items");
+        mItems = mFirestore.collection((user.getEmail() != null) ? user.getEmail() : "Items");
+        mItems2 = mFirestore.collection((user.getEmail() != null) ? "Intake: " + user.getEmail() : "Intake: Default");
         // Get the data.
         queryData();
 
@@ -150,7 +159,7 @@ public class ShopListActivity extends AppCompatActivity {
         TypedArray itemRate = getResources().obtainTypedArray(R.array.shopping_item_rates);
 
         for (int i = 0; i < itemsList.length; i++)
-            mItems.add(new ShoppingItem(
+            mItems.add(new FoodItem(
                     itemsList[i],
                     itemsInfo[i],
                     itemsPrice[i],
@@ -170,7 +179,7 @@ public class ShopListActivity extends AppCompatActivity {
         mItems.orderBy("cartedCount", Query.Direction.DESCENDING).limit(queryLimit).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        ShoppingItem item = document.toObject(ShoppingItem.class);
+                        FoodItem item = document.toObject(FoodItem.class);
                         item.setId(document.getId());
                         mItemsData.add(item);
                     }
@@ -185,7 +194,27 @@ public class ShopListActivity extends AppCompatActivity {
                 });
     }
 
-    public void deleteItem(ShoppingItem item) {
+    private void queryData2(){
+        mItems2Data.clear();
+        mItems2.orderBy("cartedCount", Query.Direction.DESCENDING).limit(queryLimit).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        FoodItem item = document.toObject(FoodItem.class);
+                        item.setId(document.getId());
+                        mItems2Data.add(item);
+                    }
+
+//                    if (mItems2Data.size() == 0) {
+//                        return;
+//                    }
+
+                    // Notify the adapter of the change.
+                    mAdapter.notifyDataSetChanged();
+                });
+    }
+
+    public void deleteItem(FoodItem item) {
+        // Todo: make it delete from the other collection
         DocumentReference ref = mItems.document(item._getId());
 
         ref.delete().addOnSuccessListener(succes -> {
@@ -199,7 +228,81 @@ public class ShopListActivity extends AppCompatActivity {
         mNotificationHandler.cancel();
     }
 
-    public void updateAlertIcon(ShoppingItem item) {
+    public void updateItem(FoodItem item) {
+
+    }
+
+    public void addItem(FoodItem item) {
+        // Get the resources from the XML file.
+        String itemName = item.getName();
+        Log.d(LOG_TAG, item.getName() + "     aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        String itemInfo = item.getInfo();
+        String itemKcal = item.getCalories();
+        int itemImage = item.getImageResource();
+        float itemRate = item.getRatedInfo();
+
+
+//        String itemsList = getResources()
+//                .getStringArray(R.array.shopping_item_names);
+//        String itemsInfo = getResources()
+//                .getStringArray(R.array.shopping_item_desc);
+//        String itemsPrice = getResources()
+//                .getStringArray(R.array.shopping_item_price);
+//        TypedArray itemsImageResources =
+//                getResources().obtainTypedArray(R.array.shopping_item_images);
+//        TypedArray itemRate = getResources().obtainTypedArray(R.array.shopping_item_rates);
+        boolean contains = false;
+        for (int i = 0; i < mItems2Data.size(); i++) {
+            if (mItems2Data.get(i).getName().equals(item.getName())){
+                String id = mItems2Data.get(i)._getId();
+                mItems2.document(id).update("cartedCount", mItems2Data.get(i).getCartedCount() + 1).addOnFailureListener(failure -> {
+                    Toast.makeText(this, "Item " + id + " cannot be changed.", Toast.LENGTH_SHORT).show();
+                });
+                contains = true;
+                break;
+            }
+        }
+        if(!contains)
+            mItems2.add(new FoodItem(
+                itemName,
+                itemInfo,
+                itemKcal,
+                itemRate,
+                itemImage,
+                0));
+
+        queryData2();
+
+        // Recycle the typed array.
+//        itemsImageResources.recycle();
+    }
+
+    public void removeItem(FoodItem item) {
+        for (int i = 0; i < mItems2Data.size(); i++) {
+            if (mItems2Data.get(i).getName().equals(item.getName())){
+                if (mItems2Data.get(i).getCartedCount() > 0){
+                    String id = mItems2Data.get(i)._getId();
+                    mItems2.document(id).update("cartedCount", mItems2Data.get(i).getCartedCount() - 1).addOnFailureListener(failure -> {
+                        Toast.makeText(this, "Item " + id + " cannot be changed.", Toast.LENGTH_SHORT).show();
+                    });
+                } else {
+                    String id = mItems2Data.get(i)._getId();
+                    DocumentReference ref = mItems2.document(mItems2Data.get(i)._getId());
+                    ref.delete().addOnSuccessListener(succes -> {
+                        Log.d(LOG_TAG, "Item is successfully deleted: " + id);
+                    })
+                            .addOnFailureListener(failure -> {
+                                Toast.makeText(this, "Item  " + id + " cannot be deleted.", Toast.LENGTH_SHORT).show();
+                            });
+                }
+            }
+        }
+        queryData2();
+        mNotificationHandler.cancel();
+    }
+
+    public void updateAlertIcon(FoodItem item) {
+        addItem(item);
         cartItems = (cartItems + 1);
         if (0 < cartItems) {
             countTextView.setText(String.valueOf(cartItems));
@@ -249,17 +352,20 @@ public class ShopListActivity extends AppCompatActivity {
                 return true;
             case R.id.settings_button:
                 Log.d(LOG_TAG, "Setting clicked!");
-                FirebaseAuth.getInstance().signOut();
-                finish();
+//                FirebaseAuth.getInstance().signOut();
+//                finish();
                 return true;
             case R.id.cart:
                 Log.d(LOG_TAG, "Cart clicked!");
+                Intent intent = new Intent(this, IntakeActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.view_selector:
                 if (viewRow) {
                     changeSpanCount(item, R.drawable.ic_view_grid, 1);
                 } else {
                     changeSpanCount(item, R.drawable.ic_view_row, 2);
+
                 }
                 return true;
             default:
@@ -297,8 +403,8 @@ public class ShopListActivity extends AppCompatActivity {
         unregisterReceiver(powerReceiver);
     }
 
-    private void setAlarmManager(){
-        long repeatInterval = 1*60*1000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+    private void setAlarmManager() {
+        long repeatInterval = 1 * 60 * 1000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
         long triggerTime = SystemClock.elapsedRealtime() + repeatInterval;
 
         Intent intent = new Intent(this, AlarmReceiver.class);

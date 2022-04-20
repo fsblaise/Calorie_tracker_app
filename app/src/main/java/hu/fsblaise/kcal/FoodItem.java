@@ -1,21 +1,21 @@
 package hu.fsblaise.kcal;
 
-public class ShoppingItem {
+public class FoodItem {
     private String id;
     private String name;
     private String info;
-    private String price;
+    private String calories;
     private float ratedInfo;
     private int imageResource;
     private int cartedCount;
 
-    public ShoppingItem() {
+    public FoodItem() {
     }
 
-    public ShoppingItem(String name, String info, String price, float ratedInfo, int imageResource, int cartedCount) {
+    public FoodItem(String name, String info, String calories, float ratedInfo, int imageResource, int cartedCount) {
         this.name = name;
         this.info = info;
-        this.price = price;
+        this.calories = calories;
         this.ratedInfo = ratedInfo;
         this.imageResource = imageResource;
         this.cartedCount = cartedCount;
@@ -29,8 +29,8 @@ public class ShoppingItem {
         return info;
     }
 
-    public String getPrice() {
-        return price;
+    public String getCalories() {
+        return calories;
     }
 
     public float getRatedInfo() {

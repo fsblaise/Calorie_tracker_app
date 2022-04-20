@@ -54,6 +54,7 @@
             android:textColor="@color/red" />
 
         <LinearLayout
+            android:id="@+id/linear1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/price"
@@ -61,18 +62,44 @@
 
             <Button
                 android:id="@+id/add_to_cart"
-                android:layout_width="wrap_content"
+                android:onClick="addItem"
+                android:layout_width="57dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="@string/to_cart" />
+                android:drawableLeft="@drawable/ic_plus_one" />
+
+            <Button
+                android:id="@+id/remove"
+                android:onClick="removeItem"
+                android:layout_width="57dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:drawableLeft="@drawable/ic_remove" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linear1"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:id="@+id/update"
+                android:onClick="updateItem"
+                android:layout_width="57dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:drawableLeft="@drawable/ic_settings" />
 
             <Button
                 android:id="@+id/delete"
                 android:onClick="deleteItem"
-                android:layout_width="wrap_content"
+                android:layout_width="57dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="@string/delete" />
+                android:drawableLeft="@drawable/ic_delete" />
+
         </LinearLayout>
 
     </RelativeLayout>
