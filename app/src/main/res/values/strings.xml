@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Shop</string>
+    <string name="app_name">Calorie Tracker</string>
     <string name="name">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -31,29 +31,153 @@
     <string name="my_daily_intake">My daily intake</string>
 
     <string-array name="shopping_item_names">
-        <item>Smart Phone</item>
-        <item>Tablet</item>
-        <item>Gaming PC</item>
-        <item>Oled TV</item>
-        <item>Bicycle</item>
-        <item>Lego</item>
-        <item>Costume</item>
-        <item>Sport tools</item>
-        <item>Kitchen tools</item>
-        <item>Furniture</item>
+        <item>áfonya</item>
+        <item>alma</item>
+        <item>almáspite</item>
+        <item>ananász</item>
+        <item>banán</item>
+        <item>bárány</item>
+        <item>brokkoli</item>
+        <item>cseresznye</item>
+        <item>csirkemell</item>
+        <item>datolya</item>
+        <item>sertéshús</item>
+        <item>édesburgonya</item>
+        <item>eper</item>
+        <item>füge</item>
+        <item>görögdinnye</item>
+        <item>hal</item>
+        <item>hell</item>
+        <item>joghurt</item>
+        <item>kacsahús</item>
+        <item>kakaóscsiga</item>
+        <item>karalábé</item>
+        <item>kefír</item>
+        <item>kelbimbó</item>
+        <item>kelkáposzta</item>
+        <item>kenyér</item>
+        <item>kifli</item>
+        <item>kiwi</item>
+        <item>kókuszolaj</item>
+        <item>kóla</item>
+        <item>körte</item>
+        <item>burgonya</item>
+        <item>kukorica</item>
+        <item>lekvárostáska</item>
+        <item>lilahagyma</item>
+        <item>limonádé</item>
+        <item>málna</item>
+        <item>mandarin</item>
+        <item>marhahús</item>
+        <item>meggy</item>
+        <item>monster</item>
+        <item>márka</item>
+        <item>napraforgóolaj</item>
+        <item>narancs</item>
+        <item>narancslé</item>
+        <item>olivaolaj</item>
+        <item>paprika</item>
+        <item>paradicsom</item>
+        <item>pennetészta</item>
+        <item>pizzaszelet</item>
+        <item>pulyka</item>
+        <item>redbull</item>
+        <item>répa</item>
+        <item>ribizli</item>
+        <item>sajtos pogácsa</item>
+        <item>saláta</item>
+        <item>sárgadinnye</item>
+        <item>spenót</item>
+        <item>szilva</item>
+        <item>szőlő</item>
+        <item>tej</item>
+        <item>tejföl</item>
+        <item>tejszínhab</item>
+        <item>tök</item>
+        <item>trapista sajt</item>
+        <item>túró</item>
+        <item>túrós bukta</item>
+        <item>virslis stangi</item>
+        <item>vöröshagyma</item>
+        <item>zeller</item>
+        <item>zöldbab</item>
+        <item>zöldborsó</item>
+        <item>zsemle</item>
     </string-array>
 
     <string-array name="shopping_item_desc">
-        <item>This is a smartphone!</item>
-        <item>This is a tablet!</item>
-        <item>This is a gamer pc!</item>
-        <item>This is a OLED TV!</item>
-        <item>This is a bicycle!</item>
-        <item>This is a lego set!</item>
-        <item>This is a costume!</item>
-        <item>These are sport tools!</item>
-        <item>These are kitchen tools!</item>
-        <item>This is a piece of furniture!</item>
+        <item>Ez egy áfonya</item>
+        <item>Ez egy alma</item>
+        <item>Ez egy almáspite</item>
+        <item>Ez egy ananász</item>
+        <item>Ez egy banán</item>
+        <item>Ez egy bárány</item>
+        <item>Ez egy brokkoli</item>
+        <item>Ez egy cseresznye</item>
+        <item>Ez egy csirkemell</item>
+        <item>Ez egy datolya</item>
+        <item>Ez egy sertéshús</item>
+        <item>Ez egy édesburgonya</item>
+        <item>Ez egy eper</item>
+        <item>Ez egy füge</item>
+        <item>Ez egy görögdinnye</item>
+        <item>Ez egy hal</item>
+        <item>Ez egy hell</item>
+        <item>Ez egy joghurt</item>
+        <item>Ez egy kacsahús</item>
+        <item>Ez egy kakaóscsiga</item>
+        <item>Ez egy karalábé</item>
+        <item>Ez egy kefír</item>
+        <item>Ez egy kelbimbó</item>
+        <item>Ez egy kelkáposzta</item>
+        <item>Ez egy kenyér</item>
+        <item>Ez egy kifli</item>
+        <item>Ez egy kiwi</item>
+        <item>Ez egy kókuszolaj</item>
+        <item>Ez egy kóla</item>
+        <item>Ez egy körte</item>
+        <item>Ez egy burgonya</item>
+        <item>Ez egy kukorica</item>
+        <item>Ez egy lekvárostáska</item>
+        <item>Ez egy lilahagyma</item>
+        <item>Ez egy limonádé</item>
+        <item>Ez egy málna</item>
+        <item>Ez egy mandarin</item>
+        <item>Ez egy marhahús</item>
+        <item>Ez egy meggy</item>
+        <item>Ez egy monster</item>
+        <item>Ez egy márka</item>
+        <item>Ez egy napraforgóolaj</item>
+        <item>Ez egy narancs</item>
+        <item>Ez egy narancslé</item>
+        <item>Ez egy olivaolaj</item>
+        <item>Ez egy paprika</item>
+        <item>Ez egy paradicsom</item>
+        <item>Ez egy pennetészta</item>
+        <item>Ez egy pizzaszelet</item>
+        <item>Ez egy pulyka</item>
+        <item>Ez egy redbull</item>
+        <item>Ez egy répa</item>
+        <item>Ez egy ribizli</item>
+        <item>Ez egy sajtos pogácsa</item>
+        <item>Ez egy saláta</item>
+        <item>Ez egy sárgadinnye</item>
+        <item>Ez egy spenót</item>
+        <item>Ez egy szilva</item>
+        <item>Ez egy szőlő</item>
+        <item>Ez egy tej</item>
+        <item>Ez egy tejföl</item>
+        <item>Ez egy tejszínhab</item>
+        <item>Ez egy tök</item>
+        <item>Ez egy trapista sajt</item>
+        <item>Ez egy túró</item>
+        <item>Ez egy túrós bukta</item>
+        <item>Ez egy virslis stangli</item>
+        <item>Ez egy vöröshagyma</item>
+        <item>Ez egy zeller</item>
+        <item>Ez egy zöldbab</item>
+        <item>Ez egy zöldborsó</item>
+        <item>Ez egy zsemle</item>
     </string-array>
 
     <array name="shopping_item_rates">
@@ -67,31 +191,217 @@
         <item>4</item>
         <item>5</item>
         <item>2.5</item>
+        <item>3.5</item>
+        <item>5</item>
+        <item>4</item>
+        <item>1.5</item>
+        <item>5</item>
+        <item>3</item>
+        <item>4.5</item>
+        <item>4</item>
+        <item>5</item>
+        <item>2.5</item>
+        <item>3.5</item>
+        <item>5</item>
+        <item>4</item>
+        <item>1.5</item>
+        <item>5</item>
+        <item>3</item>
+        <item>4.5</item>
+        <item>4</item>
+        <item>5</item>
+        <item>2.5</item>
+        <item>3.5</item>
+        <item>5</item>
+        <item>4</item>
+        <item>1.5</item>
+        <item>5</item>
+        <item>3</item>
+        <item>4.5</item>
+        <item>4</item>
+        <item>5</item>
+        <item>2.5</item>
+        <item>3.5</item>
+        <item>5</item>
+        <item>4</item>
+        <item>1.5</item>
+        <item>5</item>
+        <item>3</item>
+        <item>4.5</item>
+        <item>4</item>
+        <item>5</item>
+        <item>2.5</item>
+        <item>3.5</item>
+        <item>5</item>
+        <item>4</item>
+        <item>1.5</item>
+        <item>5</item>
+        <item>3</item>
+        <item>4.5</item>
+        <item>4</item>
+        <item>5</item>
+        <item>2.5</item>
+        <item>5</item>
+        <item>2.5</item>
+        <item>3.5</item>
+        <item>5</item>
+        <item>4</item>
+        <item>1.5</item>
+        <item>5</item>
+        <item>3</item>
+        <item>4.5</item>
+        <item>4</item>
+        <item>5</item>
+        <item>2.5</item>
     </array>
 
     <array name="shopping_item_images">
-        <item>@drawable/smart_phone</item>
-        <item>@drawable/tablet</item>
-        <item>@drawable/pc</item>
-        <item>@drawable/oled_tv</item>
-        <item>@drawable/bike</item>
-        <item>@drawable/lego</item>
-        <item>@drawable/custome</item>
-        <item>@drawable/sport_tools</item>
-        <item>@drawable/kitchen</item>
-        <item>@drawable/furniture</item>
+        <item>@drawable/afonya</item>
+        <item>@drawable/alma</item>
+        <item>@drawable/almaspite</item>
+        <item>@drawable/ananasz</item>
+        <item>@drawable/banan</item>
+        <item>@drawable/barany</item>
+        <item>@drawable/brokkoli</item>
+        <item>@drawable/cseresznye</item>
+        <item>@drawable/csirkemell</item>
+        <item>@drawable/datolya</item>
+        <item>@drawable/diszno</item>
+        <item>@drawable/edeskrumpli</item>
+        <item>@drawable/eper</item>
+        <item>@drawable/fuge</item>
+        <item>@drawable/gorogdinnye</item>
+        <item>@drawable/hal</item>
+        <item>@drawable/hell</item>
+        <item>@drawable/jogurt</item>
+        <item>@drawable/kacsahus</item>
+        <item>@drawable/kakaoscsiga</item>
+        <item>@drawable/karalabe</item>
+        <item>@drawable/kefir</item>
+        <item>@drawable/kelbimbo</item>
+        <item>@drawable/kelkaposzta</item>
+        <item>@drawable/kenyer</item>
+        <item>@drawable/kifli</item>
+        <item>@drawable/kiwi</item>
+        <item>@drawable/kokuszolaj</item>
+        <item>@drawable/kola</item>
+        <item>@drawable/korte</item>
+        <item>@drawable/krumpli</item>
+        <item>@drawable/kukorica</item>
+        <item>@drawable/lekvarostaska</item>
+        <item>@drawable/lilahagyma</item>
+        <item>@drawable/limonade</item>
+        <item>@drawable/malna</item>
+        <item>@drawable/mandarin</item>
+        <item>@drawable/marha</item>
+        <item>@drawable/meggy</item>
+        <item>@drawable/monster</item>
+        <item>@drawable/marka</item>
+        <item>@drawable/napraforgoolaj</item>
+        <item>@drawable/narancs</item>
+        <item>@drawable/narancsle</item>
+        <item>@drawable/olivaolaj</item>
+        <item>@drawable/paprika</item>
+        <item>@drawable/paradicsom</item>
+        <item>@drawable/penneteszta</item>
+        <item>@drawable/pizzaszelet</item>
+        <item>@drawable/pulyka</item>
+        <item>@drawable/redbull</item>
+        <item>@drawable/repa</item>
+        <item>@drawable/ribizli</item>
+        <item>@drawable/sajtospogi</item>
+        <item>@drawable/salata</item>
+        <item>@drawable/sargadinnye</item>
+        <item>@drawable/spenot</item>
+        <item>@drawable/szilva</item>
+        <item>@drawable/szolo</item>
+        <item>@drawable/tej</item>
+        <item>@drawable/tejfol</item>
+        <item>@drawable/tejszinhab</item>
+        <item>@drawable/tok</item>
+        <item>@drawable/trapista</item>
+        <item>@drawable/turo</item>
+        <item>@drawable/turosbukta</item>
+        <item>@drawable/virslisstangli</item>
+        <item>@drawable/voroshagyma</item>
+        <item>@drawable/zeller</item>
+        <item>@drawable/zoldbab</item>
+        <item>@drawable/zoldborso</item>
+        <item>@drawable/zsemle</item>
     </array>
 
     <array name="shopping_item_price">
-        <item>100 Dv</item>
-        <item>150 Dv</item>
-        <item>500 Dv</item>
-        <item>300 Dv</item>
-        <item>180 Dv</item>
-        <item>70 Dv</item>
-        <item>20 Dv</item>
-        <item>30 Dv</item>
-        <item>15 Dv</item>
-        <item>90 Dv</item>
+        <item>57 Kcal</item>
+        <item>52 Kcal</item>
+        <item>486 Kcal</item>
+        <item>56 Kcal</item>
+        <item>103 Kcal</item>
+        <item>200 Kcal</item>
+        <item>24 Kcal</item>
+        <item>63 Kcal</item>
+        <item>109 Kcal</item>
+        <item>308 Kcal</item>
+        <item>163 Kcal</item>
+        <item>86 Kcal</item>
+        <item>35 Kcal</item>
+        <item>100 Kcal</item>
+        <item>30 Kcal</item>
+        <item>140 Kcal</item>
+        <item>120 Kcal</item>
+        <item>74 Kcal</item>
+        <item>191 Kcal</item>
+        <item>492 Kcal</item>
+        <item>39 Kcal</item>
+        <item>34 Kcal</item>
+        <item>51 Kcal</item>
+        <item>34 Kcal</item>
+        <item>255 Kcal</item>
+        <item>308 Kcal</item>
+        <item>55 Kcal</item>
+        <item>862 Kcal</item>
+        <item>44 Kcal</item>
+        <item>53 Kcal</item>
+        <item>88 Kcal</item>
+        <item>131 Kcal</item>
+        <item>379 Kcal</item>
+        <item>39 Kcal</item>
+        <item>20 Kcal</item>
+        <item>29 Kcal</item>
+        <item>50 Kcal</item>
+        <item>147 Kcal</item>
+        <item>52 Kcal</item>
+        <item>237 Kcal</item>
+        <item>21 Kcal</item>
+        <item>928 Kcal</item>
+        <item>41 Kcal</item>
+        <item>43 Kcal</item>
+        <item>900 Kcal</item>
+        <item>20 Kcal</item>
+        <item>22 Kcal</item>
+        <item>379 Kcal</item>
+        <item>620 Kcal</item>
+        <item>174 Kcal</item>
+        <item>153 Kcal</item>
+        <item>39 Kcal</item>
+        <item>34 Kcal</item>
+        <item>437 Kcal</item>
+        <item>17 Kcal</item>
+        <item>40 Kcal</item>
+        <item>20 Kcal</item>
+        <item>60 Kcal</item>
+        <item>80 Kcal</item>
+        <item>60 Kcal</item>
+        <item>216 Kcal</item>
+        <item>302 Kcal</item>
+        <item>20 Kcal</item>
+        <item>381 Kcal</item>
+        <item>78 Kcal</item>
+        <item>333 Kcal</item>
+        <item>320 Kcal</item>
+        <item>39 Kcal</item>
+        <item>28 Kcal</item>
+        <item>40 Kcal</item>
+        <item>77 Kcal</item>
+        <item>278 Kcal</item>
     </array>
 </resources>

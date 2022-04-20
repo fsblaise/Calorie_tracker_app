@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class RegisterActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String TAG = RegisterActivity.class.getName();
     private static final String PREF_KEY = RegisterActivity.class.getPackage().toString();
-    private static final int SECRET_KEY = 99;
+    private static final int SECRET_KEY = 98;
 
     EditText userNameEditText;
     EditText emailEditText;
@@ -43,11 +43,11 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        int secret_key = getIntent().getIntExtra("SECRET_KEY", 0);
+//        int secret_key = getIntent().getIntExtra("SECRET_KEY", 0);
 
-        if (secret_key != 99) {
-            finish();
-        }
+//        if (secret_key != 99) {
+//            finish();
+//        }
 
         userNameEditText = findViewById(R.id.userNameEditText);
         emailEditText = findViewById(R.id.userEmailEditText);
@@ -113,8 +113,8 @@ public class RegisterActivity extends AppCompatActivity implements AdapterView.O
     }
 
     private void startShopping() {
-        Intent intent = new Intent(this, ShopListActivity.class);
-//        intent.putExtra("SECRET_KEY",SECRET_KEY);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("SECRET_KEY",SECRET_KEY);
         startActivity(intent);
     }
 
