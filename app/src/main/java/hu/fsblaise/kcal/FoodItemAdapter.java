@@ -16,34 +16,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.List;
 
-public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapter.ViewHolder> implements Filterable {
+public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHolder> implements Filterable {
     // Member variables.
-    private ArrayList<ShoppingItem> mShoppingItemData = new ArrayList<>();
-    private ArrayList<ShoppingItem> mShoppingItemDataAll = new ArrayList<>();
+    private ArrayList<FoodItem> mFoodItemData = new ArrayList<>();
+    private ArrayList<FoodItem> mFoodItemDataAll = new ArrayList<>();
     private Context mContext;
     private int lastPosition = -1;
 
-    ShoppingItemAdapter(Context context, ArrayList<ShoppingItem> itemsData) {
-        this.mShoppingItemData = itemsData;
-        this.mShoppingItemDataAll = itemsData;
+    FoodItemAdapter(Context context, ArrayList<FoodItem> itemsData) {
+        this.mFoodItemData = itemsData;
+        this.mFoodItemDataAll = itemsData;
         this.mContext = context;
     }
 
     @Override
-    public ShoppingItemAdapter.ViewHolder onCreateViewHolder(
+    public FoodItemAdapter.ViewHolder onCreateViewHolder(
             ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(mContext)
                 .inflate(R.layout.list_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ShoppingItemAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(FoodItemAdapter.ViewHolder holder, int position) {
         // Get current sport.
-        ShoppingItem currentItem = mShoppingItemData.get(position);
+        FoodItem currentItem = mFoodItemData.get(position);
 
         // Populate the textviews with data.
         holder.bindTo(currentItem);
@@ -58,7 +56,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
 
     @Override
     public int getItemCount() {
-        return mShoppingItemData.size();
+        return mFoodItemData.size();
     }
 
 
@@ -73,15 +71,15 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
     private Filter ShoppingFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            ArrayList<ShoppingItem> filteredList = new ArrayList<>();
+            ArrayList<FoodItem> filteredList = new ArrayList<>();
             FilterResults results = new FilterResults();
 
             if (charSequence == null || charSequence.length() == 0) {
-                results.count = mShoppingItemDataAll.size();
-                results.values = mShoppingItemDataAll;
+                results.count = mFoodItemDataAll.size();
+                results.values = mFoodItemDataAll;
             } else {
                 String filterPattern = charSequence.toString().toLowerCase().trim();
-                for (ShoppingItem item : mShoppingItemDataAll) {
+                for (FoodItem item : mFoodItemDataAll) {
                     if (item.getName().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
@@ -96,7 +94,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            mShoppingItemData = (ArrayList) filterResults.values;
+            mFoodItemData = (ArrayList) filterResults.values;
             notifyDataSetChanged();
         }
     };
@@ -121,16 +119,18 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             mPriceText = itemView.findViewById(R.id.price);
         }
 
-        void bindTo(ShoppingItem currentItem) {
+        void bindTo(FoodItem currentItem) {
             mTitleText.setText(currentItem.getName());
             mInfoText.setText(currentItem.getInfo());
-            mPriceText.setText(currentItem.getPrice());
+            mPriceText.setText(currentItem.getCalories());
             mRatingBar.setRating(currentItem.getRatedInfo());
 
             // Load the images into the ImageView using the Glide library.
             Glide.with(mContext).load(currentItem.getImageResource()).into(mItemImage);
-            itemView.findViewById(R.id.add_to_cart).setOnClickListener(view -> ((ShopListActivity) mContext).updateAlertIcon(currentItem));
-            itemView.findViewById(R.id.delete).setOnClickListener(view -> ((ShopListActivity) mContext).deleteItem(currentItem));
+            itemView.findViewById(R.id.add_to_cart).setOnClickListener(view -> ((FoodListActivity) mContext).updateAlertIcon(currentItem));
+            itemView.findViewById(R.id.delete).setOnClickListener(view -> ((FoodListActivity) mContext).deleteItem(currentItem));
+            itemView.findViewById(R.id.remove).setOnClickListener(view -> ((FoodListActivity) mContext).removeItem(currentItem));
+            itemView.findViewById(R.id.update).setOnClickListener(view -> ((FoodListActivity) mContext).updateItem(currentItem));
         }
     }
 }
