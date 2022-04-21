@@ -31,6 +31,8 @@
     <string name="my_daily_intake">My daily intake</string>
     <string name="add">Add</string>
     <string name="number_of_calories_placeholder">Number of calories</string>
+    <string name="tips_placeholder">A few words about the intake.</string>
+    <string name="calorie_sum_placeholder">0 Kcal</string>
 
     <string-array name="shopping_item_names">
         <item>áfonya</item>

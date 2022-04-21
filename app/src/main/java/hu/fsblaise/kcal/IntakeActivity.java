@@ -78,12 +78,12 @@ public class IntakeActivity extends AppCompatActivity {
 
         //Commented out, because it will block the guest login
 
-//        if (user != null && !user.getEmail().equals("null")) {
-//            Log.d(LOG_TAG, "Authenticated user!" + user.getEmail());
-//        } else {
-//            Log.d(LOG_TAG, "Unauthenticated user!");
-//            finish();
-//        }
+        if (user != null && !user.getEmail().equals("null")) {
+            Log.d(LOG_TAG, "Authenticated user!" + user.getEmail());
+        } else {
+            Log.d(LOG_TAG, "Unauthenticated user!");
+            finish();
+        }
 
 /*        preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
         if(preferences != null) {
@@ -105,6 +105,7 @@ public class IntakeActivity extends AppCompatActivity {
         mFirestore = FirebaseFirestore.getInstance();
         mItems2 = mFirestore.collection((user.getEmail() != null) ? "Intake: " + user.getEmail() : "Intake: Default");
         // Get the data.
+        loadKcalSum();
         queryData2();
 
         IntentFilter filter = new IntentFilter();
@@ -142,7 +143,26 @@ public class IntakeActivity extends AppCompatActivity {
         }
     };
 
-    private void queryData2(){
+    private void loadKcalSum(){
+        int kcalSum = 0;
+        for (int i = 0; i < mItems2Data.size(); i++) {
+//            Log.d(LOG_TAG, "" + "    bbbbbbbbbbbbb");
+            kcalSum += (mItems2Data.get(i).getCartedCount()+1) * Integer.parseInt(mItems2Data.get(i).getCalories().replace(" Kcal", ""));
+        }
+//        Log.d(LOG_TAG, "" + kcalSum + "   ddddddddddddddddd");
+        TextView calText = (TextView) findViewById(R.id.calSum);
+        TextView tipText = (TextView) findViewById(R.id.tips);
+        calText.setText("" + kcalSum + " Kcal");
+        if (kcalSum < 1500){
+            tipText.setText("You should consume more calories!");
+        }else if (kcalSum < 2000){
+            tipText.setText("You are living a healthy life!");
+        } else if (kcalSum > 2000){
+            tipText.setText("You are eating too much calorie!");
+        }
+    }
+
+    private void queryData2() {
         mItems2Data.clear();
         mItems2.orderBy("cartedCount", Query.Direction.DESCENDING).limit(queryLimit).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -152,19 +172,20 @@ public class IntakeActivity extends AppCompatActivity {
                         mItems2Data.add(item);
                     }
 
-//                    if (mItems2Data.size() == 0) {
-//                        return;
-//                    }
+                    if (mItems2Data.size() == 0) {
+                        return;
+                    }
 
                     // Notify the adapter of the change.
                     mAdapter.notifyDataSetChanged();
+                    loadKcalSum();
                 });
     }
 
     public void removeItem(FoodItem item) {
         for (int i = 0; i < mItems2Data.size(); i++) {
-            if (mItems2Data.get(i).getName().equals(item.getName())){
-                if (mItems2Data.get(i).getCartedCount() > 0){
+            if (mItems2Data.get(i).getName().equals(item.getName())) {
+                if (mItems2Data.get(i).getCartedCount() > 0) {
                     String id = mItems2Data.get(i)._getId();
                     mItems2.document(id).update("cartedCount", mItems2Data.get(i).getCartedCount() - 1).addOnFailureListener(failure -> {
                         Toast.makeText(this, "Item " + id + " cannot be changed.", Toast.LENGTH_SHORT).show();
