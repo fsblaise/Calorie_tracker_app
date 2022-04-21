@@ -79,13 +79,15 @@ public class FoodListActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         //Commented out, because it will block the guest login
-
-//        if (user != null && !user.getEmail().equals("null")) {
-//            Log.d(LOG_TAG, "Authenticated user!" + user.getEmail());
-//        } else {
-//            Log.d(LOG_TAG, "Unauthenticated user!");
-//            finish();
-//        }
+        if(user == null){
+            Log.d(LOG_TAG, "Unauthenticated user!");
+            finish();
+        }
+        if(user.getEmail().equals("null")){
+            Log.d(LOG_TAG, "Unauthenticated user!");
+            finish();
+        }
+        Log.d(LOG_TAG, "Authenticated user!" + user.getEmail());
 
 /*        preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
         if(preferences != null) {
