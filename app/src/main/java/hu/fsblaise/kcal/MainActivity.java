@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -25,6 +27,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        View v = findViewById(R.id.linear1);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        v.startAnimation(animation);
+
+        v = findViewById(R.id.linearLayout);
+        animation = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        v.startAnimation(animation);
 
         Bundle bundle = getIntent().getExtras();
         SECRET_KEY = getIntent().getIntExtra("SECRET_KEY", 99);
