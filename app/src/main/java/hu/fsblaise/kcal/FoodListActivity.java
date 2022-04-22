@@ -123,7 +123,7 @@ public class FoodListActivity extends AppCompatActivity {
         mJobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
 
         //setAlarmManager();
-        setJobScheduler();
+        //setJobScheduler();
 
     }
 

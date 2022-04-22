@@ -5,8 +5,11 @@ import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
@@ -19,13 +22,20 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +47,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Objects;
 
 import static android.view.View.GONE;
@@ -49,9 +60,12 @@ public class IntakeActivity extends AppCompatActivity {
 
     private FrameLayout redCircle;
     private TextView countTextView;
-    private int cartItems = 0;
     private int gridNumber = 1;
     private int queryLimit = 1000;
+    private int hour;
+    private int minute;
+    private long timeinmillis;
+    private static String time = "";
 
     // Member variables.
     private RecyclerView mRecyclerView;
@@ -74,9 +88,11 @@ public class IntakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intake);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        View v = findViewById(R.id.topCard);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_top);
+        v.startAnimation(animation);
 
-        //Commented out, because it will block the guest login
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null && !user.getEmail().equals("null")) {
             Log.d(LOG_TAG, "Authenticated user!" + user.getEmail());
@@ -84,12 +100,6 @@ public class IntakeActivity extends AppCompatActivity {
             Log.d(LOG_TAG, "Unauthenticated user!");
             finish();
         }
-
-/*        preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
-        if(preferences != null) {
-            cartItems = preferences.getInt("cartItems", 0);
-            gridNumber = preferences.getInt("gridNum", 1);
-        }*/
 
         // recycle view
         mRecyclerView = findViewById(R.id.recyclerView2);
@@ -118,7 +128,7 @@ public class IntakeActivity extends AppCompatActivity {
         mJobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
 
         //setAlarmManager();
-        setJobScheduler();
+        //setJobScheduler();
 
     }
 
@@ -143,21 +153,19 @@ public class IntakeActivity extends AppCompatActivity {
         }
     };
 
-    private void loadKcalSum(){
+    private void loadKcalSum() {
         int kcalSum = 0;
         for (int i = 0; i < mItems2Data.size(); i++) {
-//            Log.d(LOG_TAG, "" + "    bbbbbbbbbbbbb");
-            kcalSum += (mItems2Data.get(i).getCartedCount()+1) * Integer.parseInt(mItems2Data.get(i).getCalories().replace(" Kcal", ""));
+            kcalSum += (mItems2Data.get(i).getCartedCount() + 1) * Integer.parseInt(mItems2Data.get(i).getCalories().replace(" Kcal", ""));
         }
-//        Log.d(LOG_TAG, "" + kcalSum + "   ddddddddddddddddd");
         TextView calText = (TextView) findViewById(R.id.calSum);
         TextView tipText = (TextView) findViewById(R.id.tips);
         calText.setText("" + kcalSum + " Kcal");
-        if (kcalSum < 1500){
+        if (kcalSum < 1500) {
             tipText.setText("You should consume more calories!");
-        }else if (kcalSum < 2000){
+        } else if (kcalSum < 2000) {
             tipText.setText("You are living a healthy life!");
-        } else if (kcalSum > 2000){
+        } else if (kcalSum > 2000) {
             tipText.setText("You are eating too much calorie!");
         }
     }
@@ -238,37 +246,53 @@ public class IntakeActivity extends AppCompatActivity {
                 return true;
             case R.id.settings_button:
                 Log.d(LOG_TAG, "Setting clicked!");
-//                FirebaseAuth.getInstance().signOut();
-//                finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                LayoutInflater inflater = ((Activity) this).getLayoutInflater();
+                View dialogLayout = inflater.inflate(R.layout.settings_popup,
+                        null);
+                final AlertDialog dialog = builder.create();
+                dialog.getWindow().setSoftInputMode(
+                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                dialog.setView(dialogLayout, 0, 30, 0, 0);
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.setCancelable(true);
+                dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                if (!time.equals("")){
+                    Button b = (Button)dialogLayout.findViewById(R.id.timepicker);
+                    b.setText(time);
+                }
+                WindowManager.LayoutParams wlmp = dialog.getWindow()
+                        .getAttributes();
+                wlmp.gravity = Gravity.TOP;
+
+                builder.setView(dialogLayout);
+
+                dialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void changeSpanCount(MenuItem item, int drawableId, int spanCount) {
-        viewRow = !viewRow;
-        item.setIcon(drawableId);
-        GridLayoutManager layoutManager = (GridLayoutManager) mRecyclerView.getLayoutManager();
-        layoutManager.setSpanCount(spanCount);
+    public void showTimePicker(View view) {
+        Button b = (Button) view;
+        Calendar mcurrentTime = Calendar.getInstance();
+        hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        minute = mcurrentTime.get(Calendar.MINUTE);
+        timeinmillis = mcurrentTime.getTimeInMillis();
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                setAlarmManager();
+                time = ((selectedHour < 10) ? ("0" + selectedHour) : selectedHour) + ":" + ((selectedMinute < 10) ? ("0" + selectedMinute) : selectedMinute);
+                b.setText(time);
+            }
+        }, hour, minute, true);//Yes 24 hour time
+        mTimePicker.setTitle("Select the time of the day!");
+        mTimePicker.show();
     }
-
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        final MenuItem alertMenuItem = menu.findItem(R.id.cart);
-//        FrameLayout rootView = (FrameLayout) alertMenuItem.getActionView();
-//
-//        redCircle = (FrameLayout) rootView.findViewById(R.id.view_alert_red_circle);
-//        countTextView = (TextView) rootView.findViewById(R.id.view_alert_count_textview);
-//
-//        rootView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onOptionsItemSelected(alertMenuItem);
-//            }
-//        });
-//        return super.onPrepareOptionsMenu(menu);
-//    }
 
     @Override
     protected void onDestroy() {
@@ -277,33 +301,31 @@ public class IntakeActivity extends AppCompatActivity {
     }
 
     private void setAlarmManager() {
-        long repeatInterval = 1 * 60 * 1000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-        long triggerTime = SystemClock.elapsedRealtime() + repeatInterval;
-
         Intent intent = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Log.d(LOG_TAG,"" + timeinmillis);
 
-        mAlarmManager.setInexactRepeating(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                triggerTime,
-                repeatInterval,
+        mAlarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                timeinmillis,
+                AlarmManager.INTERVAL_DAY,
                 pendingIntent
         );
 
-        // mAlarmManager.cancel(pendingIntent);
+//        mAlarmManager.cancel(pendingIntent);
     }
 
-    private void setJobScheduler() {
-        int networkType = JobInfo.NETWORK_TYPE_UNMETERED;
-        int hardDeadLine = 5000;
-
-        ComponentName name = new ComponentName(getPackageName(), NotificationJobService.class.getName());
-        JobInfo.Builder builder = new JobInfo.Builder(0, name)
-                .setRequiredNetworkType(networkType)
-                .setRequiresCharging(true)
-                .setOverrideDeadline(hardDeadLine);
-
-        mJobScheduler.schedule(builder.build());
-//        mJobScheduler.cancel(0);
-    }
+//    private void setJobScheduler() {
+//        int networkType = JobInfo.NETWORK_TYPE_UNMETERED;
+//        int hardDeadLine = 5000;
+//
+//        ComponentName name = new ComponentName(getPackageName(), NotificationJobService.class.getName());
+//        JobInfo.Builder builder = new JobInfo.Builder(0, name)
+//                .setRequiredNetworkType(networkType)
+//                .setRequiresCharging(true)
+//                .setOverrideDeadline(hardDeadLine);
+//
+//        mJobScheduler.schedule(builder.build());
+////        mJobScheduler.cancel(0);
+//    }
 }
