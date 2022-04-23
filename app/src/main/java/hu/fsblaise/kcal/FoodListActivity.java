@@ -1,11 +1,15 @@
 package hu.fsblaise.kcal;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
@@ -15,15 +19,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.database.Cursor;
+import android.media.Image;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,15 +54,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
+import static android.os.Build.VERSION.SDK_INT;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 public class FoodListActivity extends AppCompatActivity {
     private static final String LOG_TAG = FoodListActivity.class.getName();
-    private static final String PREF_KEY = MainActivity.class.getPackage().toString();
+    public static final int PICK_IMAGE = 1;
     private FirebaseUser user;
 
     private FrameLayout redCircle;
@@ -52,6 +74,7 @@ public class FoodListActivity extends AppCompatActivity {
     private int cartItems = 0;
     private int gridNumber = 1;
     private int queryLimit = 1000;
+    private String picturePath = "";
 
     // Member variables.
     private RecyclerView mRecyclerView;
@@ -71,6 +94,21 @@ public class FoodListActivity extends AppCompatActivity {
 
     private boolean viewRow = true;
 
+    private void requestPermission() {
+        if (SDK_INT >= Build.VERSION_CODES.R) {
+            try {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.parse(String.format("package:%s",getApplicationContext().getPackageName())));
+                startActivityForResult(intent, 2296);
+            } catch (Exception e) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivityForResult(intent, 2296);
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,12 +126,6 @@ public class FoodListActivity extends AppCompatActivity {
             finish();
         }
         Log.d(LOG_TAG, "Authenticated user!" + user.getEmail());
-
-/*        preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
-        if(preferences != null) {
-            cartItems = preferences.getInt("cartItems", 0);
-            gridNumber = preferences.getInt("gridNum", 1);
-        }*/
 
         // recycle view
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -121,10 +153,6 @@ public class FoodListActivity extends AppCompatActivity {
         mNotificationHandler = new NotificationHandler(this);
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         mJobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-
-        //setAlarmManager();
-        //setJobScheduler();
-
     }
 
     BroadcastReceiver powerReceiver = new BroadcastReceiver() {
@@ -216,7 +244,6 @@ public class FoodListActivity extends AppCompatActivity {
     }
 
     public void deleteItem(FoodItem item) {
-        // Todo: make it delete from the other collection
         DocumentReference ref = mItems.document(item._getId());
 
         ref.delete().addOnSuccessListener(succes -> {
@@ -231,7 +258,51 @@ public class FoodListActivity extends AppCompatActivity {
     }
 
     public void updateItem(FoodItem item) {
+        // Setting up the popup window
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = ((Activity) this).getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.update_popup,
+                null);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog.setView(dialogLayout, 0, 30, 0, 0);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
+        WindowManager.LayoutParams wlmp = dialog.getWindow()
+                .getAttributes();
+        wlmp.gravity = Gravity.TOP;
+
+        builder.setView(dialogLayout);
+
+        dialog.show();
+
+        ImageButton button = (ImageButton) dialogLayout.findViewById(R.id.confirm);
+        button.setOnClickListener(view -> {
+
+            // Getting the text out of the edittext
+            String kcal;
+            EditText kcalEdit = (EditText) dialogLayout.findViewById(R.id.kcalEditText);
+            kcal = kcalEdit.getText().toString();
+
+            // Setting the item's calorie count
+            for (int i = 0; i < mItemsData.size(); i++) {
+                if (mItemsData.get(i).getName().equals(item.getName())){
+                    if (!kcal.equals("")){
+                        kcal += " Kcal";
+                        String id = mItemsData.get(i)._getId();
+                        mItems.document(id).update("calories", kcal).addOnFailureListener(failure -> {
+                            Toast.makeText(this, "Item " + id + " cannot be changed.", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }
+            }
+            queryData();
+            mNotificationHandler.cancel();
+        });
     }
 
     public void addItem(FoodItem item) {
@@ -243,16 +314,6 @@ public class FoodListActivity extends AppCompatActivity {
         int itemImage = item.getImageResource();
         float itemRate = item.getRatedInfo();
 
-
-//        String itemsList = getResources()
-//                .getStringArray(R.array.shopping_item_names);
-//        String itemsInfo = getResources()
-//                .getStringArray(R.array.shopping_item_desc);
-//        String itemsPrice = getResources()
-//                .getStringArray(R.array.shopping_item_price);
-//        TypedArray itemsImageResources =
-//                getResources().obtainTypedArray(R.array.shopping_item_images);
-//        TypedArray itemRate = getResources().obtainTypedArray(R.array.shopping_item_rates);
         boolean contains = false;
         for (int i = 0; i < mItems2Data.size(); i++) {
             if (mItems2Data.get(i).getName().equals(item.getName())){
@@ -274,9 +335,6 @@ public class FoodListActivity extends AppCompatActivity {
                 0));
 
         queryData2();
-
-        // Recycle the typed array.
-//        itemsImageResources.recycle();
     }
 
     public void removeItem(FoodItem item) {
@@ -354,8 +412,7 @@ public class FoodListActivity extends AppCompatActivity {
                 return true;
             case R.id.settings_button:
                 Log.d(LOG_TAG, "Setting clicked!");
-//                FirebaseAuth.getInstance().signOut();
-//                finish();
+                settingsWindow();
                 return true;
             case R.id.cart:
                 Log.d(LOG_TAG, "Cart clicked!");
@@ -367,12 +424,110 @@ public class FoodListActivity extends AppCompatActivity {
                     changeSpanCount(item, R.drawable.ic_view_grid, 1);
                 } else {
                     changeSpanCount(item, R.drawable.ic_view_row, 2);
-
                 }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void settingsWindow() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = ((Activity) this).getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.add_item_popup,
+                null);
+        final AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        dialog.setView(dialogLayout, 0, 30, 0, 0);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        WindowManager.LayoutParams wlmp = dialog.getWindow()
+                .getAttributes();
+        wlmp.gravity = Gravity.TOP;
+
+        builder.setView(dialogLayout);
+
+        dialog.show();
+
+        Button confirm = (Button) dialogLayout.findViewById(R.id.confirm);
+        confirm.setOnClickListener(view -> {
+            EditText nameET = (EditText) dialogLayout.findViewById(R.id.nameEditText);
+            EditText infoET = (EditText) dialogLayout.findViewById(R.id.infoEditText);
+            EditText kcalET = (EditText) dialogLayout.findViewById(R.id.caloriesEditText);
+            if (nameET != null && infoET != null && kcalET != null && !picturePath.equals("")){
+                String name = nameET.getText().toString();
+                String info = infoET.getText().toString();
+                String kcal = kcalET.getText().toString();
+                if (!name.equals("") && !info.equals("") && !kcal.equals("")){
+                    kcal += " Kcal";
+
+                    float[] numbers = {0,0.5f,1,1.5f,2,2.5f,3,3.5f,4,4.5f,5};
+                    Random r = new Random();
+                    int rnd = r.nextInt(numbers.length);
+
+
+
+                    mItems.add(new FoodItem(
+                            name,
+                            info,
+                            kcal,
+                            numbers[rnd],
+                            0,
+                            0,
+                            picturePath));
+                    Log.d(LOG_TAG, name + "                    name");
+                    queryData();
+                }
+                if(name.equals("")) Log.e(LOG_TAG,"rossz a nev");
+                if(name.equals("")) Log.e(LOG_TAG,"rossz az info");
+                if(name.equals("")) Log.e(LOG_TAG,"rossz a kcal");
+                if(picturePath.equals("")) Log.e(LOG_TAG,"rossz a path");
+            }
+            if(nameET == null) Log.e(LOG_TAG,"nincs nev");
+            if(nameET == null) Log.e(LOG_TAG,"nincs info");
+            if(nameET == null) Log.e(LOG_TAG,"nincs kcal");
+            if(picturePath.equals("")) Log.e(LOG_TAG,"rossz a path");
+        });
+    }
+
+    public void pickimage(View view) {
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+        startActivityForResult(chooserIntent, PICK_IMAGE);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    Uri selectedImageUri = data.getData();
+                    picturePath = getRealPathFromURI(selectedImageUri);
+                    Log.d(LOG_TAG, picturePath);
+                } else {
+                    requestPermission();
+                }
+            }
+        }
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = this.getContentResolver().query(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 
     private void changeSpanCount(MenuItem item, int drawableId, int spanCount) {

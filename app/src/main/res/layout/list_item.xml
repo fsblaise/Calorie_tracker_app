@@ -78,7 +78,7 @@
                 android:layout_width="57dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:drawableLeft="@drawable/ic_remove" />
+                android:drawableLeft="@drawable/ic_minus_one" />
 
         </LinearLayout>
 

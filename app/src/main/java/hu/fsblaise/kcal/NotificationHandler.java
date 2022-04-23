@@ -11,7 +11,7 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
 public class NotificationHandler {
-    private static final String CHANNEL_ID = "shop_notification_channel";
+    private static final String CHANNEL_ID = "kcal_notification_channel";
     private final int NOTIFICATION_ID = 0;
 
     private NotificationManager mManager;
@@ -30,23 +30,23 @@ public class NotificationHandler {
 
         NotificationChannel channel = new NotificationChannel(
                 CHANNEL_ID,
-                "shop_notification",
+                "kcal_notification",
                 NotificationManager.IMPORTANCE_DEFAULT);
 
         channel.enableLights(true);
         channel.enableVibration(true);
         channel.setLightColor(Color.RED);
-        channel.setDescription("Notifications from Shop application");
+        channel.setDescription("Notifications from Calorie tracker");
         this.mManager.createNotificationChannel(channel);
     }
 
     public void send(String message){
-        Intent intent = new Intent(mContext, FoodListActivity.class);
+        Intent intent = new Intent(mContext, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
-                .setContentTitle("Shop")
+                .setContentTitle("Calorie tracker")
                 .setContentText(message)
                 .setSmallIcon(R.drawable.ic_shopping_cart)
                 .setContentIntent(pendingIntent);
