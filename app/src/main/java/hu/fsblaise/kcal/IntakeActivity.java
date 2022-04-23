@@ -56,16 +56,19 @@ import static android.view.View.VISIBLE;
 public class IntakeActivity extends AppCompatActivity {
     private static final String LOG_TAG = IntakeActivity.class.getName();
     private static final String PREF_KEY = MainActivity.class.getPackage().toString();
+    private final String healthy = "You are living a healthy life!";
+    private final String tooMuch = "You are eating too much calorie!";
+    private final String tooFew = "You should consume more calories!";
+
     private FirebaseUser user;
 
-    private FrameLayout redCircle;
-    private TextView countTextView;
     private int gridNumber = 1;
     private int queryLimit = 1000;
     private int hour;
     private int minute;
     private long timeinmillis;
     private static String time = "";
+    private String msg;
 
     // Member variables.
     private RecyclerView mRecyclerView;
@@ -162,11 +165,14 @@ public class IntakeActivity extends AppCompatActivity {
         TextView tipText = (TextView) findViewById(R.id.tips);
         calText.setText("" + kcalSum + " Kcal");
         if (kcalSum < 1500) {
-            tipText.setText("You should consume more calories!");
+            tipText.setText(tooFew);
+            msg = tooFew;
         } else if (kcalSum < 2000) {
-            tipText.setText("You are living a healthy life!");
+            tipText.setText(healthy);
+            msg = healthy;
         } else if (kcalSum > 2000) {
-            tipText.setText("You are eating too much calorie!");
+            tipText.setText(tooMuch);
+            msg = tooMuch;
         }
     }
 
@@ -262,6 +268,13 @@ public class IntakeActivity extends AppCompatActivity {
                     Button b = (Button)dialogLayout.findViewById(R.id.timepicker);
                     b.setText(time);
                 }
+                Button confirm = (Button) dialogLayout.findViewById(R.id.confirm);
+                confirm.setOnClickListener(view -> {
+                    if(!time.equals("")){
+                        setAlarmManager();
+                        dialog.hide();
+                    }
+                });
                 WindowManager.LayoutParams wlmp = dialog.getWindow()
                         .getAttributes();
                 wlmp.gravity = Gravity.TOP;
@@ -277,17 +290,22 @@ public class IntakeActivity extends AppCompatActivity {
 
     public void showTimePicker(View view) {
         Button b = (Button) view;
-        Calendar mcurrentTime = Calendar.getInstance();
-        hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        minute = mcurrentTime.get(Calendar.MINUTE);
-        timeinmillis = mcurrentTime.getTimeInMillis();
+        Calendar mCurrentTime = Calendar.getInstance();
+        hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
+        minute = mCurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                setAlarmManager();
                 time = ((selectedHour < 10) ? ("0" + selectedHour) : selectedHour) + ":" + ((selectedMinute < 10) ? ("0" + selectedMinute) : selectedMinute);
                 b.setText(time);
+                final Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, selectedHour);
+                calendar.set(Calendar.MINUTE, selectedMinute);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+
+                timeinmillis = calendar.getTimeInMillis();
             }
         }, hour, minute, true);//Yes 24 hour time
         mTimePicker.setTitle("Select the time of the day!");
@@ -302,6 +320,7 @@ public class IntakeActivity extends AppCompatActivity {
 
     private void setAlarmManager() {
         Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("msg", msg);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Log.d(LOG_TAG,"" + timeinmillis);
 

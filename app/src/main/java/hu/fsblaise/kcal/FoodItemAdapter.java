@@ -126,7 +126,12 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
             mRatingBar.setRating(currentItem.getRatedInfo());
 
             // Load the images into the ImageView using the Glide library.
-            Glide.with(mContext).load(currentItem.getImageResource()).into(mItemImage);
+            if(currentItem.getLocalPath() != null && !currentItem.getLocalPath().equals("")){
+                Glide.with(mContext).load(currentItem.getLocalPath()).into(mItemImage);
+            }
+            else{
+                Glide.with(mContext).load(currentItem.getImageResource()).into(mItemImage);
+            }
             itemView.findViewById(R.id.add_to_cart).setOnClickListener(view -> ((FoodListActivity) mContext).updateAlertIcon(currentItem));
             itemView.findViewById(R.id.delete).setOnClickListener(view -> ((FoodListActivity) mContext).deleteItem(currentItem));
             itemView.findViewById(R.id.remove).setOnClickListener(view -> ((FoodListActivity) mContext).removeItem(currentItem));
