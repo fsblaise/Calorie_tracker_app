@@ -333,18 +333,4 @@ public class IntakeActivity extends AppCompatActivity {
 
 //        mAlarmManager.cancel(pendingIntent);
     }
-
-//    private void setJobScheduler() {
-//        int networkType = JobInfo.NETWORK_TYPE_UNMETERED;
-//        int hardDeadLine = 5000;
-//
-//        ComponentName name = new ComponentName(getPackageName(), NotificationJobService.class.getName());
-//        JobInfo.Builder builder = new JobInfo.Builder(0, name)
-//                .setRequiredNetworkType(networkType)
-//                .setRequiresCharging(true)
-//                .setOverrideDeadline(hardDeadLine);
-//
-//        mJobScheduler.schedule(builder.build());
-////        mJobScheduler.cancel(0);
-//    }
 }

@@ -35,7 +35,7 @@ public class RandomAsyncLoader extends AsyncTaskLoader<String> {
         }
 
 
-        return "Login as guest in " + ms + " ms...";
+        return "Logging in in " + ms + " ms...";
     }
 }
 

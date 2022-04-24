@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -25,7 +26,6 @@ import com.bumptech.glide.Glide;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getName();
-    private static final String PREF_KEY = MainActivity.class.getPackage().toString();
     private static int SECRET_KEY;
 
     @Override
@@ -33,12 +33,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        View v = findViewById(R.id.linear1);
+        View v = findViewById(R.id.cardView);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.scale_up);
-        v.startAnimation(animation);
-
-        v = findViewById(R.id.linearLayout);
-        animation = AnimationUtils.loadAnimation(this, R.anim.scale_up);
         v.startAnimation(animation);
 
         Bundle bundle = getIntent().getExtras();
@@ -110,5 +106,13 @@ public class MainActivity extends Activity {
         else{
             Toast.makeText(this, "You have to log in to access the Daily Intake page!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void goToGithub(View view) {
+        TextView t = (TextView) view.findViewById(R.id.textView3);
+        String url = t.getText().toString();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 }
