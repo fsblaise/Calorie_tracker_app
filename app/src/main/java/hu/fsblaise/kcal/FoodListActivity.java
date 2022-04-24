@@ -1,37 +1,24 @@
 package hu.fsblaise.kcal;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -54,10 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 import static android.os.Build.VERSION.SDK_INT;
@@ -72,7 +56,7 @@ public class FoodListActivity extends AppCompatActivity {
     private FrameLayout redCircle;
     private TextView countTextView;
     private int cartItems = 0;
-    private int gridNumber = 1;
+    private int gridNumber;
     private int queryLimit = 1000;
     private String picturePath = "";
 
@@ -87,10 +71,6 @@ public class FoodListActivity extends AppCompatActivity {
     private CollectionReference mItems2;
 
     private NotificationHandler mNotificationHandler;
-    private AlarmManager mAlarmManager;
-    private JobScheduler mJobScheduler;
-
-    private SharedPreferences preferences;
 
     private boolean viewRow = true;
 
@@ -109,6 +89,14 @@ public class FoodListActivity extends AppCompatActivity {
         }
     }
 
+    private int[] getScreenSize(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        return new int[]{width, height};
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +104,6 @@ public class FoodListActivity extends AppCompatActivity {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        //Commented out, because it will block the guest login
         if(user == null){
             Log.d(LOG_TAG, "Unauthenticated user!");
             finish();
@@ -126,6 +113,11 @@ public class FoodListActivity extends AppCompatActivity {
             finish();
         }
         Log.d(LOG_TAG, "Authenticated user!" + user.getEmail());
+
+        int[] size = getScreenSize();
+        if(size[0] < 900) gridNumber = 1;
+        else if (size[0] < 1260) gridNumber = 2;
+        else gridNumber = 3;
 
         // recycle view
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -145,36 +137,8 @@ public class FoodListActivity extends AppCompatActivity {
         // Get the data.
         queryData();
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_POWER_CONNECTED);
-        filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
-        this.registerReceiver(powerReceiver, filter);
-
         mNotificationHandler = new NotificationHandler(this);
-        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        mJobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
     }
-
-    BroadcastReceiver powerReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            if (action == null)
-                return;
-
-            switch (action) {
-                case Intent.ACTION_POWER_CONNECTED:
-                    queryLimit = 1000;
-                    break;
-                case Intent.ACTION_POWER_DISCONNECTED:
-                    queryLimit = 5;
-                    break;
-            }
-
-            queryData();
-        }
-    };
 
     private void initializeData() {
         // Get the resources from the XML file.
@@ -205,7 +169,6 @@ public class FoodListActivity extends AppCompatActivity {
         // Clear the existing data (to avoid duplication).
         mItemsData.clear();
 
-//        mItems.whereEqualTo()...
         mItems.orderBy("cartedCount", Query.Direction.DESCENDING).limit(queryLimit).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
@@ -233,10 +196,6 @@ public class FoodListActivity extends AppCompatActivity {
                         item.setId(document.getId());
                         mItems2Data.add(item);
                     }
-
-//                    if (mItems2Data.size() == 0) {
-//                        return;
-//                    }
 
                     // Notify the adapter of the change.
                     mAdapter.notifyDataSetChanged();
@@ -308,7 +267,7 @@ public class FoodListActivity extends AppCompatActivity {
     public void addItem(FoodItem item) {
         // Get the resources from the XML file.
         String itemName = item.getName();
-        Log.d(LOG_TAG, item.getName() + "     aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        Log.d(LOG_TAG, item.getName());
         String itemInfo = item.getInfo();
         String itemKcal = item.getCalories();
         int itemImage = item.getImageResource();
@@ -421,9 +380,9 @@ public class FoodListActivity extends AppCompatActivity {
                 return true;
             case R.id.view_selector:
                 if (viewRow) {
-                    changeSpanCount(item, R.drawable.ic_view_grid, 1);
+                    changeSpanCount(item, R.drawable.ic_view_row, (gridNumber==1) ? gridNumber : gridNumber-1);
                 } else {
-                    changeSpanCount(item, R.drawable.ic_view_row, 2);
+                    changeSpanCount(item, R.drawable.ic_view_grid, (gridNumber==1) ? gridNumber+1 : gridNumber);
                 }
                 return true;
             default:
@@ -519,6 +478,21 @@ public class FoodListActivity extends AppCompatActivity {
                     requestPermission();
                 }
             }
+            else if (SDK_INT >= Build.VERSION_CODES.M){
+                String[] perms = {"android.permission.WRITE_EXTERNAL_STORAGE"};
+
+                int permsRequestCode = 200;
+
+                requestPermissions(perms, permsRequestCode);
+
+                Uri selectedImageUri = data.getData();
+                picturePath = getRealPathFromURI(selectedImageUri);
+                Log.d(LOG_TAG, picturePath);
+            }else {
+                Uri selectedImageUri = data.getData();
+                picturePath = getRealPathFromURI(selectedImageUri);
+                Log.d(LOG_TAG, picturePath);
+            }
         }
     }
 
@@ -557,37 +531,26 @@ public class FoodListActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(powerReceiver);
     }
 
-    private void setAlarmManager() {
-        long repeatInterval = 1 * 60 * 1000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-        long triggerTime = SystemClock.elapsedRealtime() + repeatInterval;
+    private boolean shouldAskPermission(){
 
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1);
 
-        mAlarmManager.setInexactRepeating(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                triggerTime,
-                repeatInterval,
-                pendingIntent
-        );
-
-        // mAlarmManager.cancel(pendingIntent);
     }
 
-    private void setJobScheduler() {
-        int networkType = JobInfo.NETWORK_TYPE_UNMETERED;
-        int hardDeadLine = 5000;
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(permsRequestCode, permissions, grantResults);
+        switch (permsRequestCode) {
 
-        ComponentName name = new ComponentName(getPackageName(), NotificationJobService.class.getName());
-        JobInfo.Builder builder = new JobInfo.Builder(0, name)
-                .setRequiredNetworkType(networkType)
-                .setRequiresCharging(true)
-                .setOverrideDeadline(hardDeadLine);
+            case 200:
 
-        mJobScheduler.schedule(builder.build());
-//        mJobScheduler.cancel(0);
+                boolean writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+                break;
+
+        }
+
     }
 }

@@ -13,6 +13,8 @@ package hu.fsblaise.kcal;
         import android.view.View;
         import android.widget.Button;
         import android.widget.EditText;
+        import android.widget.ProgressBar;
+        import android.widget.TextView;
         import android.widget.Toast;
 
         import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,8 +34,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     private static final String PREF_KEY = LoginActivity.class.getPackage().toString();
     private static final int RC_SIGN_IN = 123;
     private static final int SECRET_KEY = 98;
+    private Button button;
 
-    EditText userNameET;
+    EditText emailET;
     EditText passwordET;
 
     private SharedPreferences preferences;
@@ -45,7 +48,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userNameET = findViewById(R.id.editTextUserName);
+        emailET = findViewById(R.id.editTextEmail);
         passwordET = findViewById(R.id.editTextPassword);
 
         preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
@@ -56,10 +59,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        // Random Async Task
-//        Button button = findViewById(R.id.guestLoginButton);
-//        new RandomAsyncTask(button).execute();
 
         // Random Async Loader
         getSupportLoaderManager().restartLoader(0, null, this);
@@ -102,12 +101,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
     public void login(View view) {
-        String userName = userNameET.getText().toString();
+        String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
+        button = (Button) view.findViewById(R.id.loginButton);
 
-//        Log.i(TAG, "login: " + userName + "passwd: " + password);
-
-        mAuth.signInWithEmailAndPassword(userName, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
@@ -132,28 +130,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    public void loginAsGuest(View view) {
-        mAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "Anonym user logged in successfully");
-                    startShopping();
-                } else {
-                    Log.d(TAG, "Anonym user login fail");
-                    Toast.makeText(LoginActivity.this, "User login fail: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
-//    public void register(View view) {
-//        Intent intent = new Intent(this, RegisterActivity.class);
-//        intent.putExtra("SECRET_KEY", SECRET_KEY);
-//        startActivity(intent);
-//        // TODO
-//    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -176,7 +152,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     protected void onPause() {
         super.onPause();
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("userName", userNameET.getText().toString());
+        editor.putString("email", emailET.getText().toString());
         editor.putString("password", passwordET.getText().toString());
         editor.apply();
 
@@ -203,8 +179,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
-        Button button = findViewById(R.id.guestLoginButton);
-        button.setText(data);
+//        Button button2 = findViewById(R.id.googleSignInButton);
+//        button2.setText(data);
+        TextView t = findViewById(R.id.time);
+        t.setText(data);
     }
 
     @Override

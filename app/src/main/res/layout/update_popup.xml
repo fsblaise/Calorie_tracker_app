@@ -31,31 +31,23 @@
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/update">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Number of calories/unit: "
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/kcalEditText"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <EditText
                 android:id="@+id/kcalEditText"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="Number of calories/item"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/textView"
+                app:layout_constraintStart_toStartOf="parent"
                 android:textSize="20sp"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toStartOf="@+id/confirm"/>
 
             <ImageButton
                 android:id="@+id/confirm"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_check_box"
                 android:background="@drawable/rect"
                 android:backgroundTint="@color/design_default_color_primary"
