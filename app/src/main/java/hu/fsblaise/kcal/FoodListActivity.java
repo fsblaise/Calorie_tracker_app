@@ -117,7 +117,8 @@ public class FoodListActivity extends AppCompatActivity {
         int[] size = getScreenSize();
         if(size[0] < 900) gridNumber = 1;
         else if (size[0] < 1260) gridNumber = 2;
-        else gridNumber = 3;
+        else if (size[0] < 2000) gridNumber = 3;
+        else gridNumber = 4;
 
         // recycle view
         mRecyclerView = findViewById(R.id.recyclerView);

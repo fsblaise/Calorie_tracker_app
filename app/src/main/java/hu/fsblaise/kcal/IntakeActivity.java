@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -86,6 +87,14 @@ public class IntakeActivity extends AppCompatActivity {
 
     private boolean viewRow = true;
 
+    private int[] getScreenSize(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        return new int[]{width, height};
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +112,11 @@ public class IntakeActivity extends AppCompatActivity {
             Log.d(LOG_TAG, "Unauthenticated user!");
             finish();
         }
+
+        int[] size = getScreenSize();
+        if (size[0] < 1260) gridNumber = 1;
+        else if (size[0] < 2000) gridNumber = 2;
+        else gridNumber = 3;
 
         // recycle view
         mRecyclerView = findViewById(R.id.recyclerView2);
