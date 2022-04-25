@@ -1,14 +1,7 @@
 package hu.fsblaise.kcal;
 
-import static com.google.common.primitives.Floats.min;
-
-import android.animation.Animator;
 import android.content.Context;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -17,10 +10,7 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.cardview.widget.CardView;
-import androidx.core.view.GestureDetectorCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
@@ -112,8 +102,6 @@ public class IntakeAdapter extends RecyclerView.Adapter<IntakeAdapter.ViewHolder
         private TextView mTitleText;
         private TextView mPriceText;
         private TextView mCountText;
-        private float x1,x2;
-        static final int MIN_DISTANCE = 150;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -133,54 +121,6 @@ public class IntakeAdapter extends RecyclerView.Adapter<IntakeAdapter.ViewHolder
             Button removeButton = (Button) itemView.findViewById(R.id.remove);
 
             removeButton.setOnClickListener(view -> ((IntakeActivity) mContext).removeItem(currentItem));
-//            card.setOnTouchListener((view, motionEvent) -> {
-//                final boolean[] reset = {false};
-//                int x = (int) motionEvent.getX();
-//                DisplayMetrics dp = mContext.getResources().getDisplayMetrics();
-//                float cardWidth = card.getWidth();
-//                float cardStart = ((float) dp.widthPixels / 2) - (cardWidth / 2);
-//
-//                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
-//                    float currentX = card.getX();
-//                    float MIN_SWIPE_DISTANCE = -250;
-//                    card.animate().x(cardStart).setDuration(150).setListener(new Animator.AnimatorListener() {
-//                        @Override
-//                        public void onAnimationStart(Animator animator) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onAnimationEnd(Animator animator) {
-//                            if (currentX < MIN_SWIPE_DISTANCE){
-//                                deleteButton.performClick();
-//                                card.setX(0f);
-//                                reset[0] = true;
-//                                return;
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onAnimationCancel(Animator animator) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onAnimationRepeat(Animator animator) {
-//
-//                        }
-//                    }).start();
-//                }
-//                if (reset[0]) return true;
-//                if(motionEvent.getAction() == MotionEvent.ACTION_MOVE){
-//                    float newx = motionEvent.getRawX();
-//                    if(newx - cardWidth < cardStart){
-//                        card.animate().x(min(cardStart, newx - (cardWidth/2))).setDuration(0).start();
-//                    }
-//                }
-//                view.performClick();
-//                return true;
-//
-//            });
         }
     }
 }

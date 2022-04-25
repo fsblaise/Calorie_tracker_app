@@ -1,7 +1,6 @@
 package hu.fsblaise.kcal;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,9 +126,11 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.ViewHo
             mRatingBar.setRating(currentItem.getRatedInfo());
 
             // Load the images into the ImageView using the Glide library.
+            // If there is a locally stored picture with that item, load it
             if(currentItem.getLocalPath() != null && !currentItem.getLocalPath().equals("")){
                 Glide.with(mContext).load(currentItem.getLocalPath()).into(mItemImage);
             }
+            // Else check the firestore database for a resourceID, to load
             else{
                 Glide.with(mContext).load(currentItem.getImageResource()).into(mItemImage);
             }

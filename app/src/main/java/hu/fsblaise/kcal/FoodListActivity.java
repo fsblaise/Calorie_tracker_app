@@ -374,7 +374,7 @@ public class FoodListActivity extends AppCompatActivity {
                 Log.d(LOG_TAG, "Setting clicked!");
                 settingsWindow();
                 return true;
-            case R.id.cart:
+            case R.id.intake:
                 Log.d(LOG_TAG, "Cart clicked!");
                 Intent intent = new Intent(this, IntakeActivity.class);
                 startActivity(intent);
@@ -418,18 +418,18 @@ public class FoodListActivity extends AppCompatActivity {
             EditText nameET = (EditText) dialogLayout.findViewById(R.id.nameEditText);
             EditText infoET = (EditText) dialogLayout.findViewById(R.id.infoEditText);
             EditText kcalET = (EditText) dialogLayout.findViewById(R.id.caloriesEditText);
+
             if (nameET != null && infoET != null && kcalET != null && !picturePath.equals("")){
                 String name = nameET.getText().toString();
                 String info = infoET.getText().toString();
                 String kcal = kcalET.getText().toString();
+
                 if (!name.equals("") && !info.equals("") && !kcal.equals("")){
                     kcal += " Kcal";
 
                     float[] numbers = {0,0.5f,1,1.5f,2,2.5f,3,3.5f,4,4.5f,5};
                     Random r = new Random();
                     int rnd = r.nextInt(numbers.length);
-
-
 
                     mItems.add(new FoodItem(
                             name,
@@ -470,6 +470,7 @@ public class FoodListActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            // From Android 11, usage of scoped storage model is required
             if (SDK_INT >= Build.VERSION_CODES.R) {
                 if (Environment.isExternalStorageManager()) {
                     Uri selectedImageUri = data.getData();
@@ -479,6 +480,7 @@ public class FoodListActivity extends AppCompatActivity {
                     requestPermission();
                 }
             }
+            // Above android 6 Marshmallow, it is required to ask for permissions
             else if (SDK_INT >= Build.VERSION_CODES.M){
                 String[] perms = {"android.permission.WRITE_EXTERNAL_STORAGE"};
 
@@ -489,6 +491,7 @@ public class FoodListActivity extends AppCompatActivity {
                 Uri selectedImageUri = data.getData();
                 picturePath = getRealPathFromURI(selectedImageUri);
                 Log.d(LOG_TAG, picturePath);
+            // Android 10 is handled in the Manifest, with the requestLegacyExternalStorage attribute
             }else {
                 Uri selectedImageUri = data.getData();
                 picturePath = getRealPathFromURI(selectedImageUri);
@@ -514,7 +517,7 @@ public class FoodListActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        final MenuItem alertMenuItem = menu.findItem(R.id.cart);
+        final MenuItem alertMenuItem = menu.findItem(R.id.intake);
         FrameLayout rootView = (FrameLayout) alertMenuItem.getActionView();
 
         redCircle = (FrameLayout) rootView.findViewById(R.id.view_alert_red_circle);
@@ -532,26 +535,5 @@ public class FoodListActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    private boolean shouldAskPermission(){
-
-        return(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1);
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(permsRequestCode, permissions, grantResults);
-        switch (permsRequestCode) {
-
-            case 200:
-
-                boolean writeAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-
-                break;
-
-        }
-
     }
 }
