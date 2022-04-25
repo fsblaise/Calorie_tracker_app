@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -28,14 +29,38 @@ public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getName();
     private static int SECRET_KEY;
 
+    public int[] getScreenSize(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        return new int[]{width, height};
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        View v = findViewById(R.id.cardView);
+//        int[] size = getScreenSize();
+//
+//        if(size[1] < 1600) setContentView(R.layout.activity_main_land);
+
+        View v = findViewById(R.id.card1);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.scale_up);
         v.startAnimation(animation);
+
+        v = findViewById(R.id.card2);
+        animation = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        v.startAnimation(animation);
+
+        v = findViewById(R.id.card3);
+        animation = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        v.startAnimation(animation);
+        v = findViewById(R.id.card4);
+        animation = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+        v.startAnimation(animation);
+
 
         Bundle bundle = getIntent().getExtras();
         SECRET_KEY = getIntent().getIntExtra("SECRET_KEY", 99);
