@@ -1,187 +1,167 @@
 <resources>
     <string name="app_name">Calorie Tracker</string>
-    <string name="name">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="registration">Registration</string>
     <string name="email">E-mail address</string>
     <string name="confirm_password">Confirm password</string>
     <string name="cancel">Cancel</string>
-    <string name="phone_number">Phone Number</string>
-    <string name="address">Postal Address</string>
-    <string name="customer">Customer</string>
-    <string name="seller">Seller</string>
-    <string name="product_description">Product description</string>
     <string name="loginGoogle">Login with Google</string>
-    <string name="loginGuest">Login as guest</string>
-    <string-array name="phone_modes">
-        <item>Home</item>
-        <item>Work</item>
-        <item>Mobile</item>
-        <item>Other</item>
-    </string-array>
-    <string name="title_placeholder">Title</string>
     <string name="item_placeholder">Description</string>
     <string name="item_info_placeholder">Information about the product</string>
-    <string name="subtitle_detail_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ultrices congue rutrum. Phasellus elementum ipsum ac convallis aliquam. Suspendisse eleifend eros a enim faucibus mollis. Nunc placerat, est vitae vestibulum blandit, dolor diam fringilla tellus, eu euismod mauris neque at neque.</string>
-    <string name="to_cart">To cart</string>
-    <string name="account_type">Account Type</string>
-    <string name="delete">Delete</string>
     <string name="list_of_foods">List of foods</string>
     <string name="my_daily_intake">Daily intake</string>
-    <string name="add">Add</string>
-    <string name="number_of_calories_placeholder">Number of calories</string>
     <string name="tips_placeholder">A few words about the intake.</string>
     <string name="calorie_sum_placeholder">0 Kcal</string>
 
     <string-array name="shopping_item_names">
-        <item>áfonya</item>
-        <item>alma</item>
-        <item>almáspite</item>
-        <item>ananász</item>
-        <item>banán</item>
-        <item>bárány</item>
-        <item>brokkoli</item>
-        <item>cseresznye</item>
-        <item>csirkemell</item>
-        <item>datolya</item>
-        <item>sertéshús</item>
-        <item>édesburgonya</item>
-        <item>eper</item>
-        <item>füge</item>
-        <item>görögdinnye</item>
-        <item>hal</item>
-        <item>hell</item>
-        <item>joghurt</item>
-        <item>kacsahús</item>
-        <item>kakaóscsiga</item>
-        <item>karalábé</item>
-        <item>kefír</item>
-        <item>kelbimbó</item>
-        <item>kelkáposzta</item>
-        <item>kenyér</item>
-        <item>kifli</item>
-        <item>kiwi</item>
-        <item>kókuszolaj</item>
-        <item>kóla</item>
-        <item>körte</item>
-        <item>burgonya</item>
-        <item>kukorica</item>
-        <item>lekvárostáska</item>
-        <item>lilahagyma</item>
-        <item>limonádé</item>
-        <item>málna</item>
-        <item>mandarin</item>
-        <item>marhahús</item>
-        <item>meggy</item>
-        <item>monster</item>
-        <item>márka</item>
-        <item>napraforgóolaj</item>
-        <item>narancs</item>
-        <item>narancslé</item>
-        <item>olivaolaj</item>
-        <item>paprika</item>
-        <item>paradicsom</item>
-        <item>pennetészta</item>
-        <item>pizzaszelet</item>
-        <item>pulyka</item>
-        <item>redbull</item>
-        <item>répa</item>
-        <item>ribizli</item>
-        <item>sajtos pogácsa</item>
-        <item>saláta</item>
-        <item>sárgadinnye</item>
-        <item>spenót</item>
-        <item>szilva</item>
-        <item>szőlő</item>
-        <item>tej</item>
-        <item>tejföl</item>
-        <item>tejszínhab</item>
-        <item>tök</item>
-        <item>trapista sajt</item>
-        <item>túró</item>
-        <item>túrós bukta</item>
-        <item>virslis stangi</item>
-        <item>vöröshagyma</item>
-        <item>zeller</item>
-        <item>zöldbab</item>
-        <item>zöldborsó</item>
-        <item>zsemle</item>
+        <item>Blueberry</item>
+        <item>Apple</item>
+        <item>Apple pie</item>
+        <item>Pineapple</item>
+        <item>Banana</item>
+        <item>Lamb meat</item>
+        <item>Broccoli</item>
+        <item>Cherry</item>
+        <item>Chicken breast</item>
+        <item>Date</item>
+        <item>Pork</item>
+        <item>Sweet potato</item>
+        <item>Straw berry</item>
+        <item>Fig</item>
+        <item>Water melon</item>
+        <item>Fish</item>
+        <item>Hell</item>
+        <item>Yoghurt</item>
+        <item>Duck meat</item>
+        <item>Cocoa-snail</item>
+        <item>Kohlrabi</item>
+        <item>Kefir</item>
+        <item>Brussels sprouts</item>
+        <item>Kale</item>
+        <item>Bread</item>
+        <item>Croissant</item>
+        <item>Kiwi</item>
+        <item>Cocoa oil</item>
+        <item>Coke</item>
+        <item>Pear</item>
+        <item>Potato</item>
+        <item>Corn</item>
+        <item>Bag of jam</item>
+        <item>Purple onion</item>
+        <item>Lemonade</item>
+        <item>Raspberry</item>
+        <item>Mandarin</item>
+        <item>Beef</item>
+        <item>Sour cherry</item>
+        <item>Monster</item>
+        <item>Marka</item>
+        <item>Sunflower oil</item>
+        <item>Orange</item>
+        <item>Orange juice</item>
+        <item>Olive oil</item>
+        <item>Paprika</item>
+        <item>Tomato</item>
+        <item>Penne pasta</item>
+        <item>Slice of pizza</item>
+        <item>Turkey</item>
+        <item>Red Bull</item>
+        <item>Carrot</item>
+        <item>Red currant</item>
+        <item>Cheese-patty</item>
+        <item>Salad</item>
+        <item>Honeydew melon</item>
+        <item>Spinach</item>
+        <item>Plum</item>
+        <item>Grape</item>
+        <item>Milk</item>
+        <item>Sour cream</item>
+        <item>Whipped cream</item>
+        <item>Pumpkin</item>
+        <item>Trappist cheese</item>
+        <item>Cottage cheese</item>
+        <item>Cheese-cloth</item>
+        <item>Weiner-roll</item>
+        <item>Red onion</item>
+        <item>Celery</item>
+        <item>Green beans</item>
+        <item>Green peas</item>
+        <item>Bread roll</item>
     </string-array>
 
     <string-array name="shopping_item_desc">
-        <item>Ez egy áfonya</item>
-        <item>Ez egy alma</item>
-        <item>Ez egy almáspite</item>
-        <item>Ez egy ananász</item>
-        <item>Ez egy banán</item>
-        <item>Ez egy bárány</item>
-        <item>Ez egy brokkoli</item>
-        <item>Ez egy cseresznye</item>
-        <item>Ez egy csirkemell</item>
-        <item>Ez egy datolya</item>
-        <item>Ez egy sertéshús</item>
-        <item>Ez egy édesburgonya</item>
-        <item>Ez egy eper</item>
-        <item>Ez egy füge</item>
-        <item>Ez egy görögdinnye</item>
-        <item>Ez egy hal</item>
-        <item>Ez egy hell</item>
-        <item>Ez egy joghurt</item>
-        <item>Ez egy kacsahús</item>
-        <item>Ez egy kakaóscsiga</item>
-        <item>Ez egy karalábé</item>
-        <item>Ez egy kefír</item>
-        <item>Ez egy kelbimbó</item>
-        <item>Ez egy kelkáposzta</item>
-        <item>Ez egy kenyér</item>
-        <item>Ez egy kifli</item>
-        <item>Ez egy kiwi</item>
-        <item>Ez egy kókuszolaj</item>
-        <item>Ez egy kóla</item>
-        <item>Ez egy körte</item>
-        <item>Ez egy burgonya</item>
-        <item>Ez egy kukorica</item>
-        <item>Ez egy lekvárostáska</item>
-        <item>Ez egy lilahagyma</item>
-        <item>Ez egy limonádé</item>
-        <item>Ez egy málna</item>
-        <item>Ez egy mandarin</item>
-        <item>Ez egy marhahús</item>
-        <item>Ez egy meggy</item>
-        <item>Ez egy monster</item>
-        <item>Ez egy márka</item>
-        <item>Ez egy napraforgóolaj</item>
-        <item>Ez egy narancs</item>
-        <item>Ez egy narancslé</item>
-        <item>Ez egy olivaolaj</item>
-        <item>Ez egy paprika</item>
-        <item>Ez egy paradicsom</item>
-        <item>Ez egy pennetészta</item>
-        <item>Ez egy pizzaszelet</item>
-        <item>Ez egy pulyka</item>
-        <item>Ez egy redbull</item>
-        <item>Ez egy répa</item>
-        <item>Ez egy ribizli</item>
-        <item>Ez egy sajtos pogácsa</item>
-        <item>Ez egy saláta</item>
-        <item>Ez egy sárgadinnye</item>
-        <item>Ez egy spenót</item>
-        <item>Ez egy szilva</item>
-        <item>Ez egy szőlő</item>
-        <item>Ez egy tej</item>
-        <item>Ez egy tejföl</item>
-        <item>Ez egy tejszínhab</item>
-        <item>Ez egy tök</item>
-        <item>Ez egy trapista sajt</item>
-        <item>Ez egy túró</item>
-        <item>Ez egy túrós bukta</item>
-        <item>Ez egy virslis stangli</item>
-        <item>Ez egy vöröshagyma</item>
-        <item>Ez egy zeller</item>
-        <item>Ez egy zöldbab</item>
-        <item>Ez egy zöldborsó</item>
-        <item>Ez egy zsemle</item>
+        <item>These are blueberries</item>
+        <item>This is an apple</item>
+        <item>This is an apple pie</item>
+        <item>This is a pineapple</item>
+        <item>This is a banana</item>
+        <item>This is some lambmeat</item>
+        <item>This is a broccoli</item>
+        <item>These are cherries</item>
+        <item>This is some chicken breast</item>
+        <item>This is a date</item>
+        <item>This is some pork</item>
+        <item>This is a sweet potato</item>
+        <item>This is a strawberry</item>
+        <item>This is a fig</item>
+        <item>This is a watermelon</item>
+        <item>This is a fish</item>
+        <item>This is a Hell</item>
+        <item>This is a yoghurt</item>
+        <item>This is some duckmeat</item>
+        <item>This is a cocoa-snail</item>
+        <item>This is a kohlrabi</item>
+        <item>This is a kefir</item>
+        <item>These are brussels sprouts</item>
+        <item>This is a kale</item>
+        <item>This is a bread</item>
+        <item>This is a croissant</item>
+        <item>This is a kiwi</item>
+        <item>This is a bottle of cocoa oil</item>
+        <item>This is a can of coke</item>
+        <item>This is a pear</item>
+        <item>This is a potato</item>
+        <item>This is a corn</item>
+        <item>This is a bag of jam</item>
+        <item>This is a purple onion</item>
+        <item>This is a glass of lemonade</item>
+        <item>These are raspberries</item>
+        <item>This is a mandarin</item>
+        <item>This is some beef</item>
+        <item>These are sourcherries</item>
+        <item>This is a Monster</item>
+        <item>This is a Márka</item>
+        <item>This is a bottle of sunflower oil</item>
+        <item>This is an orange</item>
+        <item>This is a glass of orange juice</item>
+        <item>This is a bottle of olive oil</item>
+        <item>This is a paprika</item>
+        <item>This is a tomato</item>
+        <item>This is a handful of penne pasta</item>
+        <item>This is a slice of pizza</item>
+        <item>This is some turkey</item>
+        <item>This is a Red Bull</item>
+        <item>This is a carrot</item>
+        <item>These are redcurrants</item>
+        <item>This is a cheese-patty</item>
+        <item>This is a salad</item>
+        <item>This is a honeydew melon</item>
+        <item>This is some spinach</item>
+        <item>This is a plum</item>
+        <item>These are grapes</item>
+        <item>This is a bottle of milk</item>
+        <item>This is a bag of sour cream</item>
+        <item>This is some whipped cream</item>
+        <item>This is a pumpkin</item>
+        <item>This is some trappist cheese</item>
+        <item>This is some cottage cheese</item>
+        <item>This is a cheese-cloth</item>
+        <item>This is a weiner-roll</item>
+        <item>This is a red onion</item>
+        <item>This is a celery</item>
+        <item>These are green beans</item>
+        <item>These are green peas</item>
+        <item>This is a bread roll</item>
     </string-array>
 
     <array name="shopping_item_rates">

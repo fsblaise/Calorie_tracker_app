@@ -10,17 +10,8 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -32,8 +23,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -49,14 +38,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Objects;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 
 public class IntakeActivity extends AppCompatActivity {
     private static final String LOG_TAG = IntakeActivity.class.getName();
-    private static final String PREF_KEY = MainActivity.class.getPackage().toString();
     private final String healthy = "You are living a healthy life!";
     private final String tooMuch = "You are eating too much calorie!";
     private final String tooFew = "You should consume more calories!";
@@ -81,11 +65,6 @@ public class IntakeActivity extends AppCompatActivity {
 
     private NotificationHandler mNotificationHandler;
     private AlarmManager mAlarmManager;
-    private JobScheduler mJobScheduler;
-
-    private SharedPreferences preferences;
-
-    private boolean viewRow = true;
 
     private int[] getScreenSize(){
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -114,7 +93,7 @@ public class IntakeActivity extends AppCompatActivity {
         }
 
         int[] size = getScreenSize();
-        if (size[0] < 1260) gridNumber = 1;
+        if (size[0] < 1100) gridNumber = 1;
         else if (size[0] < 2000) gridNumber = 2;
         else gridNumber = 3;
 
@@ -135,40 +114,9 @@ public class IntakeActivity extends AppCompatActivity {
         loadKcalSum();
         queryData2();
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_POWER_CONNECTED);
-        filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
-        this.registerReceiver(powerReceiver, filter);
-
         mNotificationHandler = new NotificationHandler(this);
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        mJobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-
-        //setAlarmManager();
-        //setJobScheduler();
-
     }
-
-    BroadcastReceiver powerReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            if (action == null)
-                return;
-
-            switch (action) {
-                case Intent.ACTION_POWER_CONNECTED:
-                    queryLimit = 1000;
-                    break;
-                case Intent.ACTION_POWER_DISCONNECTED:
-                    queryLimit = 5;
-                    break;
-            }
-
-            queryData2();
-        }
-    };
 
     private void loadKcalSum() {
         int kcalSum = 0;
@@ -198,10 +146,6 @@ public class IntakeActivity extends AppCompatActivity {
                         FoodItem item = document.toObject(FoodItem.class);
                         item.setId(document.getId());
                         mItems2Data.add(item);
-                    }
-
-                    if (mItems2Data.size() == 0) {
-                        return;
                     }
 
                     // Notify the adapter of the change.
@@ -329,7 +273,6 @@ public class IntakeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(powerReceiver);
     }
 
     private void setAlarmManager() {
@@ -344,7 +287,5 @@ public class IntakeActivity extends AppCompatActivity {
                 AlarmManager.INTERVAL_DAY,
                 pendingIntent
         );
-
-//        mAlarmManager.cancel(pendingIntent);
     }
 }

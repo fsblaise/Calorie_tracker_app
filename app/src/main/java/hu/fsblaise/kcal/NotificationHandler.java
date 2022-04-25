@@ -44,11 +44,10 @@ public class NotificationHandler {
         Intent intent = new Intent(mContext, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                 .setContentTitle("Calorie tracker")
                 .setContentText(message)
-                .setSmallIcon(R.drawable.ic_shopping_cart)
+                .setSmallIcon(R.drawable.ic_fastfood)
                 .setContentIntent(pendingIntent);
 
         this.mManager.notify(NOTIFICATION_ID, builder.build());
