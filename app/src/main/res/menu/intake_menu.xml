@@ -14,11 +14,11 @@
         android:id="@+id/log_out_button"
         app:showAsAction="always"
         android:icon="@drawable/ic_exit"
-        android:title="Kijelentkezés" >
+        android:title="Log out" >
     </item>
     <item
         android:id="@+id/settings_button"
         app:showAsAction="always"
         android:icon="@drawable/ic_settings"
-        android:title="Beállítás" />
+        android:title="Settings" />
 </menu>

@@ -28,14 +28,14 @@
         android:id="@+id/log_out_button"
         app:showAsAction="never"
         android:icon="@drawable/ic_exit"
-        android:title="Kijelentkezés"
+        android:title="Log out"
         android:orderInCategory="2">
     </item>
     <item
         android:id="@+id/settings_button"
         app:showAsAction="never"
         android:icon="@drawable/ic_settings"
-        android:title="Beállítás"
+        android:title="Settings"
         android:orderInCategory="1">
     </item>
 </menu>
